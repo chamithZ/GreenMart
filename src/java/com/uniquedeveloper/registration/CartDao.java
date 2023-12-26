@@ -201,4 +201,35 @@ private List<Cart> getCartItemsForCart(int cartId, Connection connection) throws
             e.printStackTrace(); // Handle the exception according to your needs
         }
     }
+    
+public void increaseQuantity(int cartId, int productId, int quantity,String type) {
+    try (Connection connection = DbCon.getConnection()) {
+         
+       int newQuantity=quantity;
+       
+        if("int".equals(type)){
+            System.out.println(type);
+              ++newQuantity;
+        }
+        else if("dec".equals(type)){
+              --newQuantity;
+        }
+
+        String updateSql = "UPDATE cartitem SET quantity = ? WHERE cartId = ? AND productId = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
+            updateStatement.setInt(1, newQuantity);
+            updateStatement.setInt(2, cartId);
+            updateStatement.setInt(3, productId);
+            updateStatement.executeUpdate();
+
+            System.out.println("Quantity update successfully.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace(); // Handle the exception according to your needs
+    }
+}
+
+    
+    
+    
 }

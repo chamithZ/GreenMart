@@ -22,53 +22,42 @@ import com.uniquedeveloper.registration.*;
 @WebServlet(name = "OrderNowServlet", urlPatterns = {"/order-now"})
 public class OrderNowServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
+   @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
 
-            User name = (User) request.getSession().getAttribute("name");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    Date date = new Date();
 
-            if (name != null) {
-                String productId = request.getParameter("id");
-                int productQuantity = Integer.parseInt(request.getParameter("quantity"));
-                if (productQuantity <= 0) {
-                	productQuantity = 1;
-                }
-                Order orderModel = new Order();
-                orderModel.setId(Integer.parseInt(productId));
-                orderModel.setUid(name.getId());
-                orderModel.setQunatity(productQuantity);
-                orderModel.setDate(formatter.format(date));
-
-                OrderDao orderDao = new OrderDao(DbCon.getConnection());
-                boolean result = orderDao.insertOrder(orderModel);
-                if (result) {
-                    ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
-                    if (cart_list != null) {
-                        for (Cart c : cart_list) {
-                            if (c.getId() == Integer.parseInt(productId)) {
-                                cart_list.remove(cart_list.indexOf(c));
-                                break;
-                            }
-                        }
-                    }
-                    response.sendRedirect("orders.jsp");
-                } else {
-                    out.println("order failed");
-                }
-            } else {
-                response.sendRedirect("index.jsp");
-            }
-
-        } catch (ClassNotFoundException|SQLException e) {
-            // TODO Auto-generated catch block
-
-		} 
+    Order order = new Order();
+    int uid = Integer.parseInt(request.getParameter("uid"));
+    int pid = Integer.parseInt(request.getParameter("productId"));
+    double price = Double.parseDouble(request.getParameter("price"));
+    String name = request.getParameter("productName");
+    int quantity = Integer.parseInt(request.getParameter("quantity"));
+    
+    order.setProductName(name);
+    order.setProductId(pid);
+    order.setQunatity(quantity);
+    order.setUid(uid);
+    order.setTPrice(price);
+    order.setDate(formatter.format(date)); // Set the current date in the required format
+  System.out.println(price);
+    OrderDao orderDao = new OrderDao(DbCon.getConnection());
+    boolean status=orderDao.insertOrder(order);
+    
+    if(status){
+         response.sendRedirect("product.jsp");
     }
+    else{
+        response.sendRedirect("error.jsp");
+    }
+
+
+   
+}
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

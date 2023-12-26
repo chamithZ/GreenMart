@@ -43,8 +43,7 @@ public class CartServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             // Handle the exception (e.g., log or display an error message)
             e.printStackTrace();
-            // Redirect to an error page or display an error message
-            response.sendRedirect("error.jsp");
+            
         }
     }
 }

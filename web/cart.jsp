@@ -121,9 +121,9 @@ font-size: 25px;
 						<form action="order-now" method="post" class="form-inline">
 						<input type="hidden" name="id" value="<%= c.getId()%>" class="form-input">
 							<div class="form-group d-flex justify-content-between">
-								<a class="btn bnt-sm btn-incre" href="quantity-inc-dec?action=inc&id=<%=c.getId()%>"><i class="fas fa-plus-square"></i></a> 
+								<a class="btn bnt-sm btn-incre" href="quantity-inc?action=inc&id=<%= c.getId() %>&cartId=<%= c.getCartId() %>&quantity=<%= c.getQuantity() %>&type=<%= "int" %>"><i class="fas fa-plus-square"></i></a> 
 								<input type="text" name="quantity" class="form-control"  value="<%=c.getQuantity()%>" readonly> 
-								<a class="btn btn-sm btn-decre" href="quantity-inc-dec?action=dec&id=<%=c.getId()%>"><i class="fas fa-minus-square"></i></a>
+								<a class="btn btn-sm btn-decre" href="quantity-inc?action=dec&id=<%= c.getId() %>&cartId=<%= c.getCartId() %>&quantity=<%= c.getQuantity() %>&type=<%= "dec" %>"><i class="fas fa-minus-square"></i></a>
 							</div>
 							<button type="submit" class="btn btn-primary btn-sm">Buy</button>
 						</form>

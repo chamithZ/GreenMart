@@ -3,16 +3,28 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/QuantityIncDecServlet.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/index.jsp</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/review.jsp</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/contact.jsp</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/CheckOutServlet.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/UserDao.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/cart.jsp</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/checkout.jsp</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/css/checkout.css</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/CartDao.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/DbCon.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/OrderNowServlet.java</file>
             <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/ProductDao.java</file>
             <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/login.jsp</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/CartItem.java</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/AddToCartServlet.java</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/Cart.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/order.jsp</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/OrderDao.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/RemoveFromCartServlet.java</file>
             <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/login.java</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/cart.jsp</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/CartDao.java</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/product.jsp</file>
-            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/CartServlet.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/purchase.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/LoginServlet.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/src/java/com/uniquedeveloper/registration/purchaseservelet.java</file>
+            <file>file:/C:/Users/Chamith/Documents/NetBeansProjects/web/css/review.css</file>
         </group>
     </open-files>
 </project-private>

@@ -11,9 +11,13 @@ package com.uniquedeveloper.registration;
 public class Order extends Product {
     private int orderId;
 	private int uid;
+        private int pid;
 	private int qunatity;
 	private String date;
-	
+        private String productName;
+	private double price;
+        
+        
 	public Order() {
 	}
 	
@@ -31,6 +35,19 @@ public class Order extends Product {
 		this.qunatity = qunatity;
 		this.date = date;
 	}
+        public String getProductName(){
+            return this.productName;
+        }
+         public void setProductName(String name){
+            this.productName=name;
+        }
+         public double getTPrice() {
+		return this.price;
+	}
+         public void setTPrice(double price) {
+		this.price = price;
+	}
+   
 
 	public int getOrderId() {
 		return orderId;
@@ -38,6 +55,13 @@ public class Order extends Product {
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
+        public void setProductId(int productId){
+            this.pid=productId;
+        }
+        
+        public int getProductId(){
+            return pid;
+        }
 	
 	public int getUid() {
 		return uid;

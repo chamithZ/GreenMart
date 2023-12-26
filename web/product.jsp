@@ -1,4 +1,3 @@
-Product
 
 <%@page import="com.uniquedeveloper.registration.DbCon"%>
 <%@page import="com.uniquedeveloper.registration.ProductDao"%>
@@ -89,19 +88,24 @@ if (cart_list != null) {
 						<h5 class="card-title"><%=p.getName() %></h5>
 						<h6 class="price">Price: RS.<%=p.getPrice()%></h6>
 						<h6 class="category">Category: <%=p.getCategory() %></h6>
-						 <div class="mt-3 d-flex justify-content-between">
-                            <!-- Form for Add to Cart -->
-                            <form action="addToCart" method="post">
-                                  <input type="hidden" name="userId" value="<%= request.getSession().getAttribute("userId") %>">
+			 <div class="mt-3 d-flex justify-content-between">
+                            <form action="addToCart" method="post" id="addToCartForm">
+                                 <input type="hidden" name="userId" value="<%= request.getSession().getAttribute("userId") %>">
                                  <input type="hidden" name="productId" value="<%= p.getId() %>">
-                                 <input type="number" name="quantity" value="1" min="1"> <!-- Quantity input -->
-                                 <button type="submit" class="btn btn-dark">Add to Cart</button>
+                                 <input type="hidden" name="quantity" id="quantityInput" value="1" min="1"> <!-- Quantity input -->
+                                  <button type="submit" class="btn btn-dark">Add to Cart</button>
                             </form>
-                            <!-- Buy Now Form (if needed) -->
-                            <form action="purchaseservelet" method="post">
+
+<!-- Buy Now Form (if needed) -->
+                            <form action="check-out" method="post" id="buyNowForm">
+                                <input type="hidden" name="userId" value="<%= request.getSession().getAttribute("userId") %>">
                                 <input type="hidden" name="productId" value="<%=p.getId()%>">
-                                <button type="submit" class="btn btn-primary">Buy Now</button>
+                                <input type="hidden" name="quantity" id="buyNowQuantity" value="1">
+                                 <button type="submit" class="btn btn-primary">Buy Now</button>
                             </form>
+
+                      
+                        
                         </div>
 					</div>
 				</div>
@@ -115,6 +119,8 @@ if (cart_list != null) {
 
 		</div>
 	</div>
+                        
+                         
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

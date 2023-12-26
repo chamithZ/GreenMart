@@ -31,12 +31,15 @@ public class OrderDao {
 	public boolean insertOrder(Order model) {
         boolean result = false;
         try {
-            query = "insert into orders (p_id, u_id, o_quantity, o_date) values(?,?,?,?)";
+            
+            query = "insert into orders (p_id,u_id,o_quantity,o_date,o_productname,o_price) values(?,?,?,?,?,?)";
             pst = this.con.prepareStatement(query);
-            pst.setInt(1, model.getId());
+            pst.setInt(1, model.getProductId());
             pst.setInt(2, model.getUid());
             pst.setInt(3, model.getQunatity());
             pst.setString(4, model.getDate());
+            pst.setString(5, model.getProductName());
+            pst.setDouble(6, model.getTPrice());
             pst.executeUpdate();
             result = true;
         } catch (SQLException e) {

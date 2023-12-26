@@ -21,46 +21,54 @@ import com.uniquedeveloper.registration.DbCon;
 import com.uniquedeveloper.registration.OrderDao;
 import com.uniquedeveloper.registration.*;
 
-@WebServlet(name = "CheckOutServlet", urlPatterns = {"/cart-check-out"})
+@WebServlet(name = "CheckOutServlet", urlPatterns = {"/check-out"})
 public class CheckOutServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try(PrintWriter out = response.getWriter()){
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-			ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
-			User auth = (User) request.getSession().getAttribute("auth");
-			if(cart_list != null && auth!=null) {
-				for(Cart c:cart_list) {
-					Order order = new Order();
-					order.setId(c.getId());
-					order.setUid(auth.getId());
-					order.setQunatity(c.getQuantity());
-					order.setDate(formatter.format(date));
-					
-					OrderDao oDao = new OrderDao(DbCon.getConnection());
-					boolean result = oDao.insertOrder(order);
-					if(!result) break;
-				}
-				cart_list.clear();
-				response.sendRedirect("orders.jsp");
-			}else {
-				if(auth==null) {
-					response.sendRedirect("login.jsp");
-				}
-				response.sendRedirect("cart.jsp");
-			}
-		} catch (ClassNotFoundException|SQLException e) {
-			
-			e.printStackTrace();
-		}
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
-    }
+        try {
+            // Retrieve parameters from the request
+            String userIdStr = request.getParameter("userId");
+            String productIdStr = request.getParameter("productId");
+            String quantityStr = request.getParameter("quantity");
+            
+            System.out.println(userIdStr);
+                System.out.println(productIdStr);
+                System.out.println("quantity"+quantityStr);
+            // Check if parameters are not null or empty
+            if (userIdStr != null && !userIdStr.isEmpty() &&
+                    productIdStr != null && !productIdStr.isEmpty() &&
+                    quantityStr != null && !quantityStr.isEmpty()) {
 
+                // Parse parameters to integers
+                int userId = Integer.parseInt(userIdStr);
+                int productId = Integer.parseInt(productIdStr);
+                int quantity = Integer.parseInt(quantityStr);
+
+                // Set request attributes
+                request.setAttribute("userId", userId);
+                request.setAttribute("productId", productId);
+                request.setAttribute("quantity", quantity);
+                
+                ProductDao productDao=new ProductDao(DbCon.getConnection());
+                Product proudct=new Product();
+                
+                proudct= productDao.getProductById(productId);
+                
+                request.setAttribute("productName",proudct.getName());
+                request.setAttribute("price",proudct.getPrice());
+                request.setAttribute("category",proudct.getCategory());
+                
+                // Redirect to checkout.jsp
+                request.getRequestDispatcher("checkout.jsp").forward(request, response);
+            } else {
+                System.out.println("Pass null values in checkout");
+                response.sendRedirect("error.jsp");
+            }
+        } catch (NumberFormatException e) {
+            // Handle the exception (e.g., log or display an error message)
+            e.printStackTrace();
+        }
+    }
 }

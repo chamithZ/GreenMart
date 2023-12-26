@@ -126,4 +126,29 @@ public List<Cart> getCartProducts(ArrayList<Cart> cartList) {
     return book;
 }
 
+public Product getProductById(int pid) {
+    Product product = new Product();
+    try {
+        query = "select * from products where id=?";
+        pst = con.prepareStatement(query);
+        pst.setInt(1, pid);
+        rs = pst.executeQuery();
+
+        // Move the cursor to the first row
+        if (rs.next()) {
+            // Access data after moving the cursor to the first row
+            product.setName(rs.getString("name"));
+            product.setCategory(rs.getString("category"));
+            product.setPrice(rs.getDouble("price"));
+
+            System.out.println(product.getName());
+        }
+    } catch (SQLException e) {
+        System.out.println("hehe");
+        System.out.println(e.getMessage());
+    }
+    return product;
+}
+
+
 }
