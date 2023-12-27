@@ -32,10 +32,9 @@ public class CheckOutServlet extends HttpServlet {
             String userIdStr = request.getParameter("userId");
             String productIdStr = request.getParameter("productId");
             String quantityStr = request.getParameter("quantity");
+            String cartIdStr = request.getParameter("quantity");
             
-            System.out.println(userIdStr);
-                System.out.println(productIdStr);
-                System.out.println("quantity"+quantityStr);
+           
             // Check if parameters are not null or empty
             if (userIdStr != null && !userIdStr.isEmpty() &&
                     productIdStr != null && !productIdStr.isEmpty() &&
@@ -45,16 +44,20 @@ public class CheckOutServlet extends HttpServlet {
                 int userId = Integer.parseInt(userIdStr);
                 int productId = Integer.parseInt(productIdStr);
                 int quantity = Integer.parseInt(quantityStr);
-
+                 int cartId = Integer.parseInt(cartIdStr);
+                  
                 // Set request attributes
                 request.setAttribute("userId", userId);
                 request.setAttribute("productId", productId);
-                request.setAttribute("quantity", quantity);
+                request.setAttribute("quantity", quantity); 
+                request.setAttribute("cartId",cartId);
                 
                 ProductDao productDao=new ProductDao(DbCon.getConnection());
                 Product proudct=new Product();
                 
                 proudct= productDao.getProductById(productId);
+                
+                
                 
                 request.setAttribute("productName",proudct.getName());
                 request.setAttribute("price",proudct.getPrice());

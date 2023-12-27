@@ -9,22 +9,30 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.*;
 import java.text.SimpleDateFormat;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.uniquedeveloper.registration.DbCon;
 import com.uniquedeveloper.registration.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "OrderNowServlet", urlPatterns = {"/order-now"})
-public class OrderNowServlet extends HttpServlet {
+
+/**
+ *
+ * @author Chamith
+ */
+@WebServlet(name = "CartOrderServlet", urlPatterns = {"/CartOrderServlet"})
+public class CartOrderServlet extends HttpServlet {
 
    @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,49 +41,40 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     Date date = new Date();
-
-    Order order = new Order();
-    HttpSession session = request.getSession();
-    int uid = Integer.parseInt(request.getParameter("uid"));
-     int cartId = Integer.parseInt(request.getParameter("cartId"));
-    int pid = Integer.parseInt(request.getParameter("productId"));
-    double price = Double.parseDouble(request.getParameter("price"));
-    String name = request.getParameter("productName");
-    int quantity = Integer.parseInt(request.getParameter("quantity")); 
-    double balance = (Double)request.getSession().getAttribute("balance");
-    String email=(String)request.getSession().getAttribute("email");
-    double updatebalance=balance-price;
-    
-    order.setProductName(name);
-    order.setProductId(pid);
-    order.setQunatity(quantity);
-    order.setUid(uid);
-    order.setTPrice(price);
-    order.setDate(formatter.format(date)); // Set the current date in the required format
-
-    OrderDao orderDao = new OrderDao(DbCon.getConnection());
-    
-    boolean status=orderDao.insertOrder(order);
-    
-    if(cartId!=90000){
+        HttpSession session = request.getSession();
+      String userIdString = (String) request.getSession().getAttribute("userId");
+      int userId = Integer.parseInt(userIdString);
+      String email=(String)request.getSession().getAttribute("email");
+        double balance = (Double)request.getSession().getAttribute("balance");
+    List<Cart> cartProduct = (List<Cart>) request.getSession().getAttribute("cartProduct");
+     OrderDao orderDAO = new OrderDao(DbCon.getConnection());
+     
+    for(Cart c:cartProduct){
+        Order order=new Order();
         CartDao cartDao= new CartDao();
-        cartDao.removeCartItem(cartId, pid);
+        order.setProductName(c.getName());
+        order.setProductId(c.getId());
+        order.setQunatity(c.getQuantity());
+        order.setUid(userId);
+        order.setTPrice(c.getPrice());
+        order.setDate(formatter.format(date)); // Set the current date in the required format
+        balance=balance-(c.getPrice());
+      
+    OrderDao orderDao = new OrderDao(DbCon.getConnection());
+    boolean status=orderDao.insertOrder(order);
+
+      if(!status){
+         response.sendRedirect("error.jsp");   
     }
-    
-    
-    if(status){
-        
-        
-          OrderDao orderDAO = new OrderDao(DbCon.getConnection());
-          orderDAO.purchase(updatebalance, uid);
-          session.setAttribute("balance", updatebalance);
-          sendOrderConfirmationEmail(email,order.getProductName(),price );
-          response.sendRedirect("order.jsp");
+      cartDao.removeCartItem(c.getCartId(), c.getId()); 
+          orderDAO.purchase(balance, userId);
+          session.setAttribute("balance", balance);
     }
-    else{
-        response.sendRedirect("error.jsp");
-    }
+
     
+    sendOrderConfirmationEmail(email,"Items",balance );
+     response.sendRedirect("order.jsp");
+
 }
 
  private void sendOrderConfirmationEmail(String userEmail, String productName,double price) {
@@ -103,8 +102,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail));
             message.setSubject("Order Confirmation");
             message.setText("Dear Customer,\n\nThank you for your order of " + productName +
-                    ". Your order has been successfully placed. You paid "+price+" from your green card.\n\nYour sincerely,\nGreen Supermarket");
-
+                    ". Your order has been successfully placed. Now Your green card balance is "+price+"\n\nYour sincerely,\nGreen Supermarket");
 
             // Send the message
             Transport.send(message);
@@ -122,6 +120,4 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         doGet(request, response);
     }
     
-    
-
 }

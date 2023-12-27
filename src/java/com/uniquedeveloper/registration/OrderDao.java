@@ -89,4 +89,21 @@ public class OrderDao {
         }
         //return result;
     }
+    
+    public void purchase(double payment,int uid){
+    
+        String updateSql = "UPDATE user SET ubalance = ? WHERE id=?";
+        try (PreparedStatement updateStatement = this.con.prepareStatement(updateSql)) {
+            updateStatement.setDouble(1, payment);
+            updateStatement.setInt(2, uid);
+           
+            updateStatement.executeUpdate();
+
+            System.out.println("Payment success.");
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
+        }   
+    }
+    
+    
 }

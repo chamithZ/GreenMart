@@ -31,6 +31,7 @@ if (cart_list != null) {
 	request.setAttribute("total", total);
 	request.setAttribute("cart_list", cart_list);
 }
+request.getSession().setAttribute("cartProduct", cartProduct);
 %>
 
 <!DOCTYPE html>
@@ -97,7 +98,14 @@ font-size: 25px;
     </nav>
 
 	<div class="container my-3">
-		<div class="d-flex py-3"><h3>Total Price: $ ${(total>0)?dcf.format(total):0} </h3> <a class="mx-3 btn btn-primary" href="cart-check-out">Check Out</a></div>
+			<%
+			if (cart_list != null && !cart_list.isEmpty()) {
+		%>
+			<div class="d-flex py-3"><h3>Total Price: $ ${(total > 0) ? dcf.format(total) : 0} </h3> <a class="mx-3 btn btn-primary" href="CartCheckoutServlet" id="checkoutBtn">Check Out</a></div>
+		<%
+			} 
+		%>
+			
 		<table class="table table-light">
 			<thead>
 				<tr>
@@ -118,10 +126,13 @@ font-size: 25px;
 					<td><%=c.getCategory()%></td>
 					<td><%= dcf.format(c.getPrice())%></td>
 					<td>
-						<form action="order-now" method="post" class="form-inline">
+						<form action="check-out" method="post" class="form-inline">
 						<input type="hidden" name="id" value="<%= c.getId()%>" class="form-input">
 							<div class="form-group d-flex justify-content-between">
-								<a class="btn bnt-sm btn-incre" href="quantity-inc?action=inc&id=<%= c.getId() %>&cartId=<%= c.getCartId() %>&quantity=<%= c.getQuantity() %>&type=<%= "int" %>"><i class="fas fa-plus-square"></i></a> 
+								<a class="btn bnt-sm btn-incre" href="quantity-inc?action=inc&id=<%= c.getId() %>&cartId=<%= c.getCartId() %>&quantity=<%= c.getQuantity() %>&type=<%= "int" %>"><i class="fas fa-plus-square"></i></a>
+                                                                 <input type="hidden" name="userId" value="<%= request.getSession().getAttribute("userId") %>">
+                                                                  <input type="hidden" name="productId" value="<%=c.getId()%>">
+                                                                    <input type="hidden" name="cartId" value="<%=c.getCartId()%>">
 								<input type="text" name="quantity" class="form-control"  value="<%=c.getQuantity()%>" readonly> 
 								<a class="btn btn-sm btn-decre" href="quantity-inc?action=dec&id=<%= c.getId() %>&cartId=<%= c.getCartId() %>&quantity=<%= c.getQuantity() %>&type=<%= "dec" %>"><i class="fas fa-minus-square"></i></a>
 							</div>

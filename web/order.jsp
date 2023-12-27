@@ -13,11 +13,12 @@
 	List<Order> orders = null;
 	if (auth != null) {
 	    request.setAttribute("person", auth);
-	    OrderDao orderDao  = new OrderDao(DbCon.getConnection());
-		orders = orderDao.userOrders(auth.getId());
-	}else{
-		response.sendRedirect("product.jsp");
+	   
 	}
+         OrderDao orderDao  = new OrderDao(DbCon.getConnection());
+         String userIdString = (String) request.getSession().getAttribute("userId");
+            int userId = Integer.parseInt(userIdString);
+	orders = orderDao.userOrders(userId);
 	ArrayList<Cart> cart_list = (ArrayList<Cart>) session.getAttribute("cart-list");
 	if (cart_list != null) {
 		request.setAttribute("cart_list", cart_list);
@@ -86,7 +87,7 @@
 					<th scope="col">Category</th>
 					<th scope="col">Quantity</th>
 					<th scope="col">Price</th>
-					<th scope="col">Cancel</th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -100,7 +101,7 @@
 						<td><%=o.getCategory() %></td>
 						<td><%=o.getQunatity() %></td>
 						<td><%=dcf.format(o.getPrice()) %></td>
-						<td><a class="btn btn-sm btn-danger" href="cancel-order?id=<%=o.getOrderId()%>">Cancel Order</a></td>
+						
 					</tr>
 				<%}
 			}

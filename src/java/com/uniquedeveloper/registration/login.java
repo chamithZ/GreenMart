@@ -38,9 +38,12 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
         pst.setString(2, upwd);
 
         ResultSet rs = pst.executeQuery();
+        
         if (rs.next()) {
             session.setAttribute("userId", rs.getString("id"));
             session.setAttribute("name", rs.getString("uname"));
+            session.setAttribute("balance", rs.getDouble("ubalance"));
+            session.setAttribute("email", rs.getString("uemail"));
             dispatcher = request.getRequestDispatcher("index.jsp");
         } else {
             request.setAttribute("status", "failed");

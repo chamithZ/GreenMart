@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -33,8 +34,13 @@
   display: table;
   clear: both;
 }
+<%
+    DecimalFormat dcf = new DecimalFormat("###.##");
+    double balance = (Double)request.getSession().getAttribute("balance");
+    %>
 </style>
- <script>
+
+<script>
     // Function to update total price based on quantity
     function updateTotalPrice() {
         // Get the quantity input and total price element
@@ -55,12 +61,31 @@
         totalPriceElement.textContent = 'Total Price: ' + totalPrice;
 
         // Update the Pay Now link's href with the quantity value
-         payNowLink.href = "order-now?productId=${productId}&productName=${productName}&uid=<%= request.getSession().getAttribute("userId") %>&price=" + encodeURIComponent(totalPrice) + "&quantity=" + quantity;
+        var userId = '<%= request.getSession().getAttribute("userId") %>'; // Get the userId from the server
+        var cartId = '${cartId}';
+        payNowLink.href = "order-now?productId=${productId}&productName=${productName}&uid=" + userId + "&cartId=" + cartId + "&price=" + encodeURIComponent(totalPrice) + "&quantity=" + quantity;
+        
+        // Check form validity and disable Pay Now button if form is not valid
+        var form = document.forms[0];
+        if (form.checkValidity()) {
+            payNowLink.removeAttribute('disabled');
+        } else {
+            payNowLink.setAttribute('disabled', 'disabled');
+        }
     }
 
     // Add event listener to quantity input
     document.getElementById('quantity').addEventListener('input', updateTotalPrice);
+
+    // Add event listener to form submission to prevent default if form is not valid
+    document.forms[0].addEventListener('submit', function (event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+        }
+    });
 </script>
+
+
 
 </head>
 <body>
@@ -89,18 +114,27 @@
         <div class="column">
           
               <div class="c_us" >
-        <h1>Checkouts</h1>
+        <h1>Payment</h1>
         <div class="order-details">
          
             <form>
-                <input type="text" placeholder="Credit/Debit Card No">
-                <input type="text" placeholder="CVV">
-                <input type="text" placeholder="Expire Date">
+                 <p>Available Balance: ${balance} </p>
+                <input type="text" placeholder="Credit/Debit Card No" required>
+                <input type="text" placeholder="CVV" required>
+                <input type="text" placeholder="Expire Date"oninput="updateTotalPrice()" required>
                 
 
             </form>
-           <a id="payNowLink" href="order-now?productId=${productId}&productName=${productName}&price=${price}&quantity=1&uid=<%= request.getSession().getAttribute("userId") %>">
-    <button class="btn">Pay Now</button>
+          <a id="payNowLink" href="#" disabled>
+    <button id="payNowButton" style="display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s ease;" onclick="processPayment()">Pay Now</button>
 </a>
          
            

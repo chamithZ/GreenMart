@@ -100,6 +100,7 @@ if (cart_list != null) {
                             <form action="check-out" method="post" id="buyNowForm">
                                 <input type="hidden" name="userId" value="<%= request.getSession().getAttribute("userId") %>">
                                 <input type="hidden" name="productId" value="<%=p.getId()%>">
+                                 <input type="hidden" name="cartId" value="90000">
                                 <input type="hidden" name="quantity" id="buyNowQuantity" value="1">
                                  <button type="submit" class="btn btn-primary">Buy Now</button>
                             </form>

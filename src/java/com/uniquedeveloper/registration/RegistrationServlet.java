@@ -31,18 +31,20 @@ public class RegistrationServlet extends HttpServlet {
                  String uemail=request.getParameter("email");
                  String upwd=request.getParameter("pass");
                  String umobile=request.getParameter("contact");
+                 double balance=100000;
                  RequestDispatcher dispatcher=null;
                  Connection con=null;
                  
                  try{
                  Class.forName("com.mysql.cj.jdbc.Driver");
                  con = DriverManager.getConnection("jdbc:mysql://localhost:3306/esupermarket", "root", "16820");
-                 PreparedStatement pst = con.prepareStatement("insert into user(uname,upwd,uemail,umobile) values(?,?,?,?)");
+                 PreparedStatement pst = con.prepareStatement("insert into user(uname,upwd,uemail,umobile,ubalance) values(?,?,?,?,?)");
                  {
                  pst.setString(1,uname);
                  pst.setString(2,upwd);
                  pst.setString(3,uemail);
                  pst.setString(4,umobile);
+                 pst.setDouble(5,balance);
                  
                  int rowCount = pst.executeUpdate();
                  dispatcher=request.getRequestDispatcher("registration.jsp");
